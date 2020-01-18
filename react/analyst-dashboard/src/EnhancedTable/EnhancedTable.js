@@ -328,7 +328,8 @@ console.log(rows)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
+                  
+                  const isSpam = "YES" ? row.spam : "NO"
                   return (
                     <TableRow
                       hover
@@ -338,6 +339,7 @@ console.log(rows)
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
+                      style={ isSpam ? {backgroundColor:'red',} : {backgroundColor:'white',}}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
@@ -349,12 +351,12 @@ console.log(rows)
                         {row.name}
                       </TableCell>
                       <TableCell align="right">{row.subject}</TableCell>
-
                       <TableCell align="right">{row.sender}</TableCell>
                       <TableCell align="right">{row.recipient}</TableCell>
                       <TableCell align="right">{row.body}</TableCell>
                       <TableCell align="right">{row.sendDate}</TableCell>
                       <TableCell align="right">{row.attachment}</TableCell>
+                      <TableCell align="right">{isSpam}</TableCell>
                     </TableRow>
                   );
                 })}
