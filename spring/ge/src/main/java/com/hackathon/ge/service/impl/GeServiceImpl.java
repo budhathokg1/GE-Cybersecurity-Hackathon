@@ -1,5 +1,6 @@
 package com.hackathon.ge.service.impl;
 
+import com.google.gson.Gson;
 import com.hackathon.ge.model.Data;
 import com.hackathon.ge.model.Email;
 import com.hackathon.ge.repository.GeRepository;
@@ -26,7 +27,7 @@ public class GeServiceImpl implements GeService {
     private GeRepository geRepository;
 
     @Override
-    public List<Email> getAllEmails() {
+    public String getAllEmails() {
         List<Email> emails = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Data> entity = restTemplate.getForEntity("https://s3rdf9bxgg.execute-api.us-east-2.amazonaws.com/deploy/all", Data.class);
@@ -40,6 +41,7 @@ public class GeServiceImpl implements GeService {
             }
         }
         emails.addAll(geRepository.findAll());
-        return emails;
+        Gson gson = new Gson();
+        return gson.toJson(emails);
     }
 }

@@ -242,11 +242,12 @@ export default function EnhancedTable() {
   };
   const fetchData = async (url) => {
       const response = await axios.get(url)
-      setRowData(response.data.data)
+      console.log(response)
+      setRowData(response.data)
   }
 
   useEffect(() => {
-    fetchData('https://s3rdf9bxgg.execute-api.us-east-2.amazonaws.com/deploy/all')
+    fetchData('http://localhost:8080/emails')
   }, []);
  
   

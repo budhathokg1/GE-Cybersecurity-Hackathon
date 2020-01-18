@@ -5,5 +5,5 @@ import com.hackathon.ge.model.Email;
 import java.util.List;
 
 public interface GeService {
-    List<Email> getAllEmails();
+    String getAllEmails();
 }

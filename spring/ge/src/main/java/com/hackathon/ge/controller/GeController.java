@@ -18,7 +18,7 @@ public class GeController {
     GeService geService;
 
     @GetMapping("/emails")
-    public List<Email> getAllEmails() {
+    public String getAllEmails() {
         return geService.getAllEmails();
     }
 }
