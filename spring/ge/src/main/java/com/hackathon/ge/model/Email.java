@@ -23,11 +23,12 @@ public class Email implements Serializable {
     private String sendDate;
     private String attachment;
     private String classification;
+    private boolean spam;
 
     public Email() {
     }
 
-    public Email(Long id, String subject, String sender, String recipient, String body, String sendDate, String attachment, String hash, String classification) {
+    public Email(Long id, String subject, String sender, String recipient, String body, String sendDate, String attachment, String hash, String classification, boolean spam) {
         this.id = id;
         this.subject = subject;
         this.sender = sender;
@@ -37,6 +38,7 @@ public class Email implements Serializable {
         this.attachment = attachment;
         this.hash = hash;
         this.classification = classification;
+        this.spam= spam;
     }
 
     public Long getId() {
@@ -109,5 +111,13 @@ public class Email implements Serializable {
 
     public void setClassification(String classification) {
         this.classification = classification;
+    }
+
+    public boolean isSpam() {
+        return spam;
+    }
+
+    public void setSpam(boolean spam) {
+        this.spam = spam;
     }
 }
