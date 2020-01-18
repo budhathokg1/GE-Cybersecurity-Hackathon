@@ -44,7 +44,7 @@ const headCells = [
     { id: 'body', numeric: false, disablePadding: false, label: 'Body' },
     { id: 'sendDate', numeric: false, disablePadding: false, label: 'Send Date' },
     { id: 'attachment', numeric: false, disablePadding: false, label: 'Attachment' },
-    { id: 'spam', numeric: false, disablePadding: false, label: 'isSpam' },
+    //{ id: 'spam', numeric: false, disablePadding: false, label: 'isSpam' },
   ];
 // const headCells = [
 //     { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
@@ -95,7 +95,12 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        <TableCell padding="checkbox" 
+            style = {{
+                backgroundColor: "Black", 
+                color: "white"
+            }}
+        >
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={numSelected === rowCount}
@@ -109,11 +114,19 @@ function EnhancedTableHead(props) {
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
+            style = {{
+                backgroundColor: "black", 
+                color: "white"
+            }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
+              style = {{
+                backgroundColor: "black", 
+                color: "white"
+            }}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -321,6 +334,7 @@ console.log(rows)
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
+              
             />
             <TableBody>
               {stableSort(rows, getSorting(order, orderBy))
@@ -329,7 +343,7 @@ console.log(rows)
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
                   
-                  const isSpam = "YES" ? row.spam : "NO"
+                  //const isSpam = "YES" ? row.spam : "NO"
                   return (
                     <TableRow
                       hover
@@ -339,7 +353,7 @@ console.log(rows)
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
-                      style={ isSpam ? {backgroundColor:'red',} : {backgroundColor:'white',}}
+                      style={ row.spam ? {backgroundColor:'#fa4646',} : {backgroundColor:'white',}}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
@@ -356,7 +370,7 @@ console.log(rows)
                       <TableCell align="right">{row.body}</TableCell>
                       <TableCell align="right">{row.sendDate}</TableCell>
                       <TableCell align="right">{row.attachment}</TableCell>
-                      <TableCell align="right">{isSpam}</TableCell>
+                      {/* <TableCell align="right">{isSpam}</TableCell> */}
                     </TableRow>
                   );
                 })}
