@@ -44,6 +44,7 @@ const headCells = [
     { id: 'body', numeric: false, disablePadding: false, label: 'Body' },
     { id: 'sendDate', numeric: false, disablePadding: false, label: 'Send Date' },
     { id: 'attachment', numeric: false, disablePadding: false, label: 'Attachment' },
+    { id: 'spam', numeric: false, disablePadding: false, label: 'isSpam' },
   ];
 // const headCells = [
 //     { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
@@ -225,7 +226,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function EnhancedTable() {
 
-  const [rows, setRowData] = useState([])
+  
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -235,24 +236,26 @@ export default function EnhancedTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  const [rows, setRowData] = useState([])
+  const fetchData = async (url) => {
+    const response = await axios.get(url)
+    console.log(response)
+    setRowData(response.data)
+}
+
+useEffect(() => {
+  fetchData('http://localhost:8080/emails')
+}, []);
+
+
+console.log("---")
+console.log(rows)
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-  const fetchData = async (url) => {
-      const response = await axios.get(url)
-      console.log(response)
-      setRowData(response.data)
-  }
-
-  useEffect(() => {
-    fetchData('http://localhost:8080/emails')
-  }, []);
- 
   
-  console.log("---")
-  console.log(rows)
   const handleSelectAllClick = event => {
     if (event.target.checked) {
       const newSelecteds = rows.map(n => n.subject);
@@ -325,7 +328,8 @@ export default function EnhancedTable() {
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
+                  
+                  const isSpam = "YES" ? row.spam : "NO"
                   return (
                     <TableRow
                       hover
@@ -335,6 +339,7 @@ export default function EnhancedTable() {
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
+                      style={ isSpam ? {backgroundColor:'red',} : {backgroundColor:'white',}}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
@@ -346,12 +351,12 @@ export default function EnhancedTable() {
                         {row.name}
                       </TableCell>
                       <TableCell align="right">{row.subject}</TableCell>
-
                       <TableCell align="right">{row.sender}</TableCell>
                       <TableCell align="right">{row.recipient}</TableCell>
                       <TableCell align="right">{row.body}</TableCell>
                       <TableCell align="right">{row.sendDate}</TableCell>
                       <TableCell align="right">{row.attachment}</TableCell>
+                      <TableCell align="right">{isSpam}</TableCell>
                     </TableRow>
                   );
                 })}
