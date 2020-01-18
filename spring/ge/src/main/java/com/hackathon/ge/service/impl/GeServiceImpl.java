@@ -6,6 +6,7 @@ import com.hackathon.ge.model.Email;
 import com.hackathon.ge.repository.GeRepository;
 import com.hackathon.ge.service.GeService;
 import com.hackathon.ge.utils.Hash;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class GeServiceImpl implements GeService {
         ResponseEntity<Data> entity = restTemplate.getForEntity("https://s3rdf9bxgg.execute-api.us-east-2.amazonaws.com/deploy/all", Data.class);
         Data data = entity.getBody();
         for (Email email : data.getData()) {
+            boolean isValid = EmailValidator.getInstance().isValid(email.getSender());
+            System.out.println("The spam is" + isValid);
+            email.setSpam(!isValid);
             String stringToBeHashed = email.getSender() + email.getBody() + email.getRecipient();
             String emailHash = Hash.md5(stringToBeHashed);
             email.setHash(emailHash);
