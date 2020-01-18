@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -29,14 +30,27 @@ public class GeServiceImpl implements GeService {
 
     @Override
     public String getAllEmails() {
+        ArrayList<String> spamWords = new ArrayList<>(Arrays.asList("Rates","Refinance","Refund","Remove","Request","Risk-free","Sales","Satisfaction","Save","Score","Serious","Spam","Success","Supplies","Take","action","Terms","Traffic","Trial","Unlimited","Urgent","Weight","While","supplies","last","Win","Winner", ".exe", ".js", ".opd",".ods", ".flac", ".tiff", ".odt"));
         List<Email> emails = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Data> entity = restTemplate.getForEntity("https://s3rdf9bxgg.execute-api.us-east-2.amazonaws.com/deploy/all", Data.class);
         Data data = entity.getBody();
         for (Email email : data.getData()) {
             boolean isValid = EmailValidator.getInstance().isValid(email.getSender());
-            System.out.println("The spam is" + isValid);
             email.setSpam(!isValid);
+
+            for(String spam : spamWords) {
+                if(email.getBody().contains(spam)) {
+                    email.setSpam(true);
+                }
+                if(email.getSubject().contains(spam)) {
+                    email.setSpam(true);
+                }
+
+                if(email.getAttachment().contains(spam)) {
+                    email.setSpam(true);
+                }
+            }
             String stringToBeHashed = email.getSender() + email.getBody() + email.getRecipient();
             String emailHash = Hash.md5(stringToBeHashed);
             email.setHash(emailHash);
