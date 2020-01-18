@@ -1,8 +1,8 @@
 spring:
     datasource:
-        url: jdbc:postgresql://localhost:5432/
+        url: jdbc:postgresql://localhost:5432/postgres
         username: postgres
-        password:
+        password: pgWXYnesh%
 
     jpa:
         show-sql: true
