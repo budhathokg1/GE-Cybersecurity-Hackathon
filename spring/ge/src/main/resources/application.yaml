@@ -1,0 +1,18 @@
+spring:
+    datasource:
+        url:
+        username:
+        password:
+
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+            naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+  error:
+    whitelabel:
+      enabled: false
